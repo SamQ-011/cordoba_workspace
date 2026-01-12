@@ -1,0 +1,43 @@
+# --- SEGURIDAD (CRÍTICO) ---
+# Nunca subas tus llaves secretas o credenciales de DB
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- REACT / NODE ---
+node_modules/
+dist/
+dist-ssr/
+build/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- PYTHON (Backend FastAPI) ---
+# Esto evita que subas los archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+
+# --- LOGS ---
+logs
+*.log
+
+# --- EDITOR & OS ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
