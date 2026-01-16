@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from app.core.config import settings
 from app.core.database import engine, Base
-from app.models import models
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routers import auth, creditors, logs, updates, admin
+from app.api.routers import auth, creditors, logs, updates, admin, workspace
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI(
@@ -14,13 +13,14 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], # El puerto de tu React
+    allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+    )
 
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(workspace.router, prefix="/workspace", tags=["Agent Workspace"])
 app.include_router(creditors.router, prefix="/creditors", tags=["Creditors"])
 app.include_router(logs.router, prefix="/logs", tags=["Audit Logs"])
 app.include_router(updates.router, prefix="/updates", tags=["Updates"])

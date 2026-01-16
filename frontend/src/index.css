@@ -1,94 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* 3. Definimos tu Tema Corporativo (Colores y Sombras) aquí mismo */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Colores Corporativos Premium */
+  --color-cordoba-dark: #0F172A;    /* Slate 900 (Textos principales) */
+  --color-cordoba-blue: #2563EB;    /* Blue 600 (Acciones primarias) */
+  --color-cordoba-surface: #F8FAFC; /* Slate 50 (Fondo de página) */
+  
+  /* Estados Semánticos (Más suaves que el default) */
+  --color-status-success: #10B981;
+  --color-status-warning: #F59E0B;
+  --color-status-error: #EF4444;
+
+  /* Sombras de Alta Calidad */
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+/* 4. Estilos globales (Opcional, para el scrollbar bonito) */
 :root {
-  --primary: #2563eb;
-  --bg: #f3f4f6;
-  --text: #1f2937;
+  font-family: var(--font-sans);
+  color: var(--color-cordoba-dark);
 }
 
-body {
-  margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
-
-.login-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
-
-.login-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-}
-
-.login-header h2 {
-  margin: 0;
-  color: var(--primary);
-  font-size: 1.8rem;
-  text-align: center;
-}
-
-.login-header p {
-  text-align: center;
-  color: #6b7280;
-  margin-bottom: 2rem;
-}
-
-.input-group {
-  position: relative;
-  margin-bottom: 1.2rem;
-}
-
-.input-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-}
-
-input {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-size: 1rem;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  transition: background 0.2s;
-}
-
-.login-btn:hover { background: #1d4ed8; }
-.login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-.error-badge {
-  background: #fef2f2;
-  color: #dc2626;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
 }

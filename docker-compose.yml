@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # --- BASE DE DATOS (Mismo nombre que en tu proyecto viejo) ---
+  db:
+    image: postgres:15-alpine
+    container_name: cordoba_db
+    restart: always
+    command: postgres -c 'max_connections=200'
+    env_file:
+      - .env
+    volumes:
+      # IMPORTANTE: Esto usa tus datos existentes
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cordoba_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d cordoba_workspace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- BACKEND ---
+  backend:
+    build:
+      context: ./backend  # Busca el Dockerfile en la carpeta backend
+    container_name: cordoba_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - cordoba_net
+
+  # --- FRONTEND ---
+  frontend:
+    build:
+      context: ./frontend # Busca el Dockerfile en la carpeta frontend
+      dockerfile: Dockerfile
+    container_name: cordoba_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8501:8501" # El puerto de tu empresa
+    volumes:
+      # Montamos el nginx.conf de tu raíz al contenedor
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - cordoba_net
+
+# Usamos el volumen existente para no perder usuarios ni logs
+volumes:
+  postgres_data:
+    external: true
+    name: cordoba_app_postgres_data 
+    # Si al correrlo te da error de volumen, cambia estas dos líneas por:
+    # postgres_data:
+
+networks:
+  cordoba_net:
+    driver: bridge

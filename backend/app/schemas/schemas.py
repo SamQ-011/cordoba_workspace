@@ -86,6 +86,90 @@ class UpdateCreate(UpdateBase):
     pass
 
 class UpdateOut(UpdateBase):
-    id: int
+    id: int 
     active: bool
+    read: bool = False
     model_config = ConfigDict(from_attributes=True)
+
+class UserUpdateAdmin(BaseModel):
+    name: Optional[str] = None
+    role: Optional[str] = None
+    active: Optional[bool] = None
+    password: Optional[str] = None  # Para reseteo de password
+
+class CreditorUpdate(BaseModel):
+    name: Optional[str] = None
+    abreviation: Optional[str] = None
+
+class UpdateCreate(BaseModel):
+    title: str
+    message: str
+    category: str # Info, Warning, Critical
+    date: str # Fecha en formato string como tenías en el MV
+
+# --- app/schemas/schemas.py ---
+class ReportRequest(BaseModel):
+    start_date: date
+    end_date: date
+    target_agent: str = "TODOS (Global)"
+    report_type: str # Estratégico, Operativo o Calidad
+
+# --- ESQUEMAS DEL WORKSPACE (DASHBOARD) ---
+
+class PaymentDates(BaseModel):
+    standard: str
+    california: str
+    max_date: str
+
+class MetricsSet(BaseModel):
+    total_calls: int
+    completed_sales: int
+    conversion_rate: float
+
+class PerformanceData(BaseModel):
+    today: MetricsSet
+    this_week: MetricsSet
+    this_month: MetricsSet
+
+class NewsItem(BaseModel):
+    id: int
+    title: str
+    message: str
+    category: str
+    date: str
+    
+class WorkspaceDashboard(BaseModel):
+    agent_name: str
+    role: str
+    payment_dates: PaymentDates
+    performance: PerformanceData
+    news: List[NewsItem]
+
+class UserPasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
+
+class AdminDashboardStats(BaseModel):
+    total_bancos: int
+    llamadas_hoy: int
+    ventas_hoy: int
+    staff_online: int
+
+class AdminLiveFeedItem(BaseModel):
+    time: str
+    agent_real_name: str
+    cordoba_id: str
+    result: str
+    affiliate: str
+
+class UserCreateAdmin(BaseModel):
+    username: str
+    name: str
+    password: str
+    role: str = "Agent"
+
+class UserUpdateAdmin(BaseModel):
+    name: Optional[str] = None
+    role: Optional[str] = None
+    active: Optional[bool] = None
+    password: Optional[str] = None

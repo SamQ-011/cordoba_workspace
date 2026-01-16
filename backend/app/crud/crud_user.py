@@ -33,3 +33,24 @@ def authenticate(db: Session, username: str, password: str) -> Optional[models.U
     if not verify_password(password, user.password):
         return None
     return user
+
+# --- app/crud/crud_user.py ---
+def update_user_admin(db: Session, user_id: int, user_in: schemas.UserUpdateAdmin):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not db_user:
+        return None
+    
+    update_data = user_in.model_dump(exclude_unset=True)
+    if "password" in update_data and update_data["password"]:
+        # Usamos la lógica de security para el hash
+        from app.core.security import get_password_hash
+        db_user.password = get_password_hash(update_data["password"])
+        del update_data["password"]
+
+    for field, value in update_data.items():
+        setattr(db_user, field, value)
+
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

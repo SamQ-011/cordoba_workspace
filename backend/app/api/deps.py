@@ -40,8 +40,20 @@ def get_current_user(db: SessionDep, token: TokenDep) -> models.User:
         raise credentials_exception
     return user
 
+def get_current_active_user(
+    current_user: models.User = Depends(get_current_user)
+) -> models.User:
+    if not current_user.active:
+        raise HTTPException(status_code=400, detail="El usuario está inactivo")
+    return current_user
+
 # Dependencia extra para validar si es Admin
-def get_current_active_admin(current_user: models.User = Depends(get_current_user)):
+def get_current_active_admin(
+    current_user: models.User = Depends(get_current_active_user) # <--- Mejor depender de active_user
+) -> models.User:
     if current_user.role != "Admin":
-        raise HTTPException(status_code=400, detail="El usuario no tiene privilegios suficientes")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="El usuario no tiene privilegios suficientes"
+        )
     return current_user

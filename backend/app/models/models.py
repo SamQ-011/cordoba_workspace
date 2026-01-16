@@ -65,4 +65,4 @@ class UpdateRead(Base):
     id = Column(Integer, primary_key=True, index=True)
     update_id = Column(Integer, ForeignKey("Updates.id"))
     username = Column(String)
-    read_at = Column(DateTime, default=get_utc_now) # [cite: 31]
+    read_at = Column(DateTime, default=get_utc_now) 

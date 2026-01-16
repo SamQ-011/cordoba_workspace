@@ -32,3 +32,28 @@ def report_search_miss(db: Session, miss_in: schemas.SearchMissCreate):
     db.commit()
     db.refresh(db_miss)
     return db_miss
+
+# --- app/crud/crud_creditor.py ---
+def create_creditor(db: Session, creditor_in: schemas.CreditorCreate):
+    db_creditor = models.Creditor(**creditor_in.model_dump())
+    db.add(db_creditor)
+    db.commit()
+    db.refresh(db_creditor)
+    return db_creditor
+
+def update_creditor(db: Session, creditor_id: int, creditor_in: schemas.CreditorUpdate):
+    db_creditor = db.query(models.Creditor).filter(models.Creditor.id == creditor_id).first()
+    if db_creditor:
+        for field, value in creditor_in.model_dump(exclude_unset=True).items():
+            setattr(db_creditor, field, value)
+        db.commit()
+        db.refresh(db_creditor)
+    return db_creditor
+
+def delete_search_miss(db: Session, miss_id: int):
+    """Reemplaza a dismiss_search_miss del admin_service anterior"""
+    db_miss = db.query(models.SearchMiss).filter(models.SearchMiss.id == miss_id).first()
+    if db_miss:
+        db.delete(db_miss)
+        db.commit()
+    return True

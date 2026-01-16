@@ -1,0 +1,21 @@
+# --- Dependencias y Entornos ---
+node_modules
+venv
+.venv
+__pycache__
+
+# --- Archivos de Sistema y Git ---
+.git
+.gitignore
+.DS_Store
+Thumbs.db
+
+# --- Archivos de Compilación (Frontend) ---
+dist
+build
+coverage
+
+# --- Datos Locales y Secretos ---
+*.csv
+*.xlsx
+.env
